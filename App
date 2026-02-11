@@ -1,0 +1,33 @@
+import React, { useRef } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Environment } from "@react-three/drei";
+import WashingMachine from "./components/WashingMachine";
+import useScrollAnimation from "./animations/useScrollAnimation";
+
+export default function App() {
+  const machineRef = useRef();
+
+  useScrollAnimation(machineRef);
+
+  return (
+    <>
+      {/* Scroll section for GSAP */}
+      <div id="scroll-section" style={{ height: "200vh" }} />
+
+      <Canvas camera={{ position: [2, 2, 3], fov: 50 }}>
+        {/* Lights */}
+        <ambientLight intensity={0.6} />
+        <directionalLight position={[5, 5, 5]} intensity={1} />
+
+        {/* 3D Model */}
+        <WashingMachine ref={machineRef} scale={1.5} position={[0, -0.5, 0]} />
+
+        {/* Controls */}
+        <OrbitControls enableZoom />
+
+        {/* HDR environment */}
+        <Environment preset="apartment" />
+      </Canvas>
+    </>
+  );
+}
