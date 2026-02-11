@@ -1,0 +1,33 @@
+import { useEffect } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+export default function useScrollAnimation(ref) {
+  useEffect(() => {
+    if (!ref.current) return;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#scroll-section",
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+      },
+    });
+
+    tl.fromTo(
+      ref.current.position,
+      { y: -1, z: 2 },
+      { y: 0, z: 0, duration: 1 }
+    ).fromTo(
+      ref.current.rotation,
+      { y: -Math.PI },
+      { y: 0, duration: 1 },
+      0
+    );
+
+    return () => ScrollTrigger.killAll();
+  }, [ref]);
+}
